@@ -1,10 +1,15 @@
-# Lädt die Website nach jedem Push auf main per SFTP auf den IONOS-Webspace.
+# Upload der Website per SFTP auf den IONOS-Webspace.
+#
+# SOLANGE DIE SEITE NICHT LIVE GEHEN SOLL:
+#   Push auf main  → nur Verbindungstest (anmelden + Zielordner auflisten), KEIN Upload.
+#   Echter Upload  → nur manuell: GitHub → Actions → "Deploy auf IONOS" → Run workflow → Modus "live".
+#
 # Zugangsdaten liegen als Secrets im GitHub-Repo (Settings → Secrets and variables → Actions):
 #   IONOS_SFTP_HOST  z. B. access-5012345678.webspace-host.com
 #   IONOS_SFTP_USER  z. B. u12345678
 #   IONOS_SFTP_PASS  SFTP-Passwort
 #   IONOS_SFTP_DIR   Zielordner der Domain auf dem Webspace, z. B. / oder /waigelbau
-# Nicht hochgeladen werden: .git*, _build/, README.md, CLAUDE.md
+# Nie hochgeladen werden: .git*, _build/, README.md, CLAUDE.md
 
 name: Deploy auf IONOS
 
@@ -12,6 +17,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      modus:
+        description: "test = nur Verbindung prüfen, live = Website hochladen"
+        type: choice
+        options: [test, live]
+        default: test
 
 concurrency:
   group: deploy-ionos
@@ -25,26 +36,39 @@ jobs:
       USER: ${{ secrets.IONOS_SFTP_USER }}
       LFTP_PASSWORD: ${{ secrets.IONOS_SFTP_PASS }}
       DIR: ${{ secrets.IONOS_SFTP_DIR }}
+      MODUS: ${{ github.event_name == 'workflow_dispatch' && inputs.modus || 'test' }}
     steps:
       - name: Secrets prüfen
-        id: check
         run: |
-          if [ -z "$HOST" ] || [ -z "$USER" ] || [ -z "$LFTP_PASSWORD" ] || [ -z "$DIR" ]; then
-            echo "::warning::IONOS-Secrets fehlen noch – Upload übersprungen."
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fehlt=""
+          [ -z "$HOST" ] && fehlt="$fehlt IONOS_SFTP_HOST"
+          [ -z "$USER" ] && fehlt="$fehlt IONOS_SFTP_USER"
+          [ -z "$LFTP_PASSWORD" ] && fehlt="$fehlt IONOS_SFTP_PASS"
+          [ -z "$DIR" ] && fehlt="$fehlt IONOS_SFTP_DIR"
+          if [ -n "$fehlt" ]; then
+            echo "::error::Folgende Secrets fehlen:$fehlt"
+            exit 1
           fi
+          echo "Alle Secrets vorhanden. Modus: $MODUS"
 
       - uses: actions/checkout@v4
-        if: steps.check.outputs.ready == 'true'
 
       - name: lftp installieren
-        if: steps.check.outputs.ready == 'true'
         run: sudo apt-get update -qq && sudo apt-get install -y -qq lftp
 
-      - name: Per SFTP hochladen
-        if: steps.check.outputs.ready == 'true'
+      - name: Verbindungstest (kein Upload)
+        run: |
+          lftp -c "
+            set sftp:auto-confirm yes;
+            set net:max-retries 2;
+            set net:timeout 30;
+            open --env-password -u \"$USER\" sftp://$HOST;
+            echo '--- Anmeldung OK. Inhalt des Zielordners:';
+            cls -la \"$DIR\"
+          "
+
+      - name: Per SFTP hochladen (nur Modus live)
+        if: env.MODUS == 'live'
         run: |
           lftp -c "
             set sftp:auto-confirm yes;
