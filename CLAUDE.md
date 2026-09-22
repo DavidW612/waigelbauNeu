@@ -36,10 +36,10 @@ Betreut von David (Bruder). Sprache der Seite: Deutsch, Sie-Form, professionell 
 - Fotos: alle Platzhalter (gelb „Foto-Platzhalter“) durch echte Baustellenfotos ersetzen.
 - Gelb markierte `<span class="todo">`-Stellen füllen (Projekte, Impressum, Zitat, Datenschutz).
 - Hinweis „Entwurf · Fotos sind Platzhalter“ in `_build/partials/header.html` entfernen.
-- Hosting wählen (z. B. Netlify / Cloudflare Pages, mit dem Repo verbunden) und
+- Hosting: IONOS Deploy Now, mit dem GitHub-Repo verbunden (Push auf main = live). Noch
   Formular-Endpunkt in `_build/pages/kontakt.html` (`data-endpoint`) eintragen.
 - Impressum: Betreiber/Rechtsform, USt-IdNr., ggf. Handwerkskammer ergänzen.
 
 ## Arbeitsweise
 - Jede Änderung als eigener Commit mit kurzer deutscher Beschreibung, danach pushen
-  (Remote: https://github.com/DavidW612/waigelbau.git, Branch main).
+  (Remote: https://github.com/DavidW612/waigelbauNeu.git, Branch main).
