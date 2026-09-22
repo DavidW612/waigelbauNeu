@@ -36,7 +36,7 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
 - Fotos: alle Platzhalter (gelb „Foto-Platzhalter“) durch echte Baustellenfotos ersetzen.
 - Gelb markierte `<span class="todo">`-Stellen füllen (Projekte, Impressum, Zitat, Datenschutz).
 - Hinweis „Entwurf · Fotos sind Platzhalter“ in `_build/partials/header.html` entfernen.
-- Hosting: IONOS Deploy Now, mit dem GitHub-Repo verbunden (Push auf main = live). Noch
+- Hosting: IONOS-Webspace. GitHub Action `.github/workflows/deploy-ionos.yml` lädt nach jedem Push auf main per SFTP hoch (Push = live). Noch
   Formular-Endpunkt in `_build/pages/kontakt.html` (`data-endpoint`) eintragen.
 - Impressum: Betreiber/Rechtsform, USt-IdNr., ggf. Handwerkskammer ergänzen.
 
