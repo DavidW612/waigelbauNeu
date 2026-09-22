@@ -2,7 +2,7 @@
 
 Firmenwebsite für Waigel-Baukoordination (immer mit Bindestrich), Inhaber Eugen Waigel.
 Fritz-Reuter-Str. 16, 29633 Munster · +49 172 9502318 · info@waigelbau.de
-Betreut von David (Bruder). Sprache der Seite: Deutsch, Sie-Form, professionell aber nahbar, keine leeren Floskeln.
+Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache der Seite: Deutsch, Sie-Form, professionell aber nahbar, keine leeren Floskeln.
 
 ## Technik
 - Statisches HTML/CSS/JS, kein Framework, kein CMS.
