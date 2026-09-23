@@ -150,7 +150,7 @@
   }
 
   /* ---- Scroll-Reveal ---- */
-  var targets = document.querySelectorAll(".reveal, .reveal-mask, .stat, .steps, .timeline li, [data-count]");
+  var targets = document.querySelectorAll(".reveal, .reveal-mask, .stat, .steps, .timeline li");
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -161,7 +161,6 @@
         var gross = el.offsetHeight > window.innerHeight * 0.55;
         if (!gross && entry.intersectionRatio < 0.18) return;
         el.classList.add("is-visible");
-        if (el.hasAttribute("data-count")) countUp(el);
         io.unobserve(el);
       });
       /* etwas früher als das Element wirklich im Bild ist */
@@ -177,7 +176,6 @@
         if (el.classList.contains("is-visible")) return false;
         if (!gutImBild(el)) return true;
         el.classList.add("is-visible");
-        if (el.hasAttribute("data-count")) countUp(el);
         io.unobserve(el);
         return false;
       });
@@ -191,9 +189,49 @@
       zeigeWasImBildIst();
     }, { passive: true });
   } else {
-    targets.forEach(function (el) {
-      el.classList.add("is-visible");
-      if (el.hasAttribute("data-count")) el.textContent = el.getAttribute("data-count");
+    targets.forEach(function (el) { el.classList.add("is-visible"); });
+  }
+
+  /* ---- Die Zahlen haben einen eigenen Auslöser ----
+     Alles andere blendet bewusst früh ein. Die Zahlen brauchen das Gegenteil:
+     Sie dürfen erst loslaufen, wenn man sie wirklich ansieht – sonst ist das
+     Hochzählen beim zügigen Scrollen vorbei, bevor man dort ankommt. */
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    var zaehlerIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        countUp(entry.target);
+        zaehlerIO.unobserve(entry.target);
+      });
+    }, { threshold: .9, rootMargin: "-12% 0px -28% 0px" });
+    counters.forEach(function (el) { zaehlerIO.observe(el); });
+
+    /* Zweiter Weg, falls der Beobachter nicht anschlägt: beim Scrollen prüfen,
+       aber erst im oberen Bildbereich – nicht schon am unteren Rand. */
+    var offeneZaehler = Array.prototype.slice.call(counters);
+    var letzteZaehlerPruefung = 0;
+    function pruefeZaehler() {
+      if (!offeneZaehler.length) return;
+      var vh = window.innerHeight || doc.clientHeight;
+      offeneZaehler = offeneZaehler.filter(function (el) {
+        var r = el.getBoundingClientRect();
+        if (r.top > vh * 0.72 || r.bottom < vh * 0.12) return true;   /* noch nicht im Blick */
+        countUp(el);
+        zaehlerIO.unobserve(el);
+        return false;
+      });
+    }
+    window.addEventListener("scroll", function () {
+      var jetzt = Date.now();
+      if (jetzt - letzteZaehlerPruefung < 120) return;
+      letzteZaehlerPruefung = jetzt;
+      pruefeZaehler();
+    }, { passive: true });
+    /* Einmal nach dem Laden: falls die Zahlen ohne Scrollen schon im Bild stehen */
+    window.setTimeout(pruefeZaehler, 600);
+  } else {
+    counters.forEach(function (el) {
+      el.innerHTML = el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
     });
   }
 

@@ -43,8 +43,10 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   zusätzliches `transform` auf `.nav__links` oder `.callbar` setzen, das bricht sie.
   Seitenkopf-Zeichnungen: am Rechner zeichnen sich die Linien (`draw`), auf dem Handy
   blenden die Teile ein (`teilEin`) – Linienzeichnen ruckelt dort.
-- Hochzählende Zahlen starten erst, wenn der Block gut im Bild ist (oben bei 85 % der
-  Bildschirmhöhe), sonst ist der Zähler vorbei, bevor man hinsieht. Die echten Zahlen
+- Hochzählende Zahlen haben einen EIGENEN Auslöser (nicht das allgemeine Scroll-Reveal!).
+  Das Reveal blendet bewusst früh ein, die Zahlen brauchen das Gegenteil: Start erst,
+  wenn sie im oberen Bildbereich stehen (72 % der Höhe), sonst ist das Hochzählen beim
+  zügigen Scrollen vorbei, bevor man hinsieht. Die echten Zahlen
   stehen im HTML und werden erst beim Start auf 0 gesetzt – so bleibt nie eine 0 stehen.
 
 ## Inhaltliche Regeln
