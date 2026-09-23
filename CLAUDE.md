@@ -41,12 +41,15 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   Sie bleiben nur für Maus-Geräte aktiv. Beim Hinzufügen neuer Effekte daran denken.
   Menü und Anruf-Leiste werden per `transform` bewegt: in dem Abschnitt NIE ein
   zusätzliches `transform` auf `.nav__links` oder `.callbar` setzen, das bricht sie.
-  Seitenkopf-Zeichnungen: am Rechner zeichnen sich die Linien (`draw`), auf dem Handy
-  blenden die Teile ein (`teilEin`) – Linienzeichnen ruckelt dort.
+  Seitenkopf-Zeichnungen: überall gleich, die Linien zeichnen sich (`draw`). Auf dem Handy
+  stärker gestaffelt (0,85 s Abstand), damit nie zwei Teile gleichzeitig laufen.
+  Der Abschnitt „Leistung auf dem Handy“ MUSS am Ende von style.css stehen, sonst
+  überschreiben ihn die allgemeinen Regeln weiter oben.
 - Hochzählende Zahlen haben einen EIGENEN Auslöser (nicht das allgemeine Scroll-Reveal!).
   Das Reveal blendet bewusst früh ein, die Zahlen brauchen das Gegenteil: Start erst,
-  wenn sie im oberen Bildbereich stehen (72 % der Höhe), sonst ist das Hochzählen beim
-  zügigen Scrollen vorbei, bevor man hinsieht. Die echten Zahlen
+  wenn sie mitten im Bild stehen (62 % der Höhe), sonst ist das Hochzählen beim zügigen
+  Scrollen vorbei, bevor man hinsieht. Scrollt man wieder weg, wird zurückgesetzt –
+  beim nächsten Hinscrollen zählt es erneut hoch. Dauer: 1,4 s. Die echten Zahlen
   stehen im HTML und werden erst beim Start auf 0 gesetzt – so bleibt nie eine 0 stehen.
 
 ## Inhaltliche Regeln

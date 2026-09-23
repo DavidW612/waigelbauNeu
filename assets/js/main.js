@@ -81,9 +81,11 @@
     var target = parseFloat(el.getAttribute("data-count"));
     var suffixHTML = el.getAttribute("data-suffix") || "";
     if (reduceMotion) { el.innerHTML = target + suffixHTML; return; }
-    var duration = 1800, start = null, fertig = false;
+    var duration = 1400, start = null, fertig = false;
     el.innerHTML = "0" + suffixHTML;
     function frame(ts) {
+      /* abgebrochen, weil der Block aus dem Bild gescrollt ist */
+      if (el.getAttribute("data-counting") !== "1") return;
       if (!start) start = ts;
       var t = Math.min((ts - start) / duration, 1);
       var eased = 1 - Math.pow(1 - t, 4);
@@ -95,7 +97,7 @@
     /* Notbremse: läuft die Animation nicht (z. B. Tab im Hintergrund),
        steht am Ende trotzdem die richtige Zahl da. */
     window.setTimeout(function () {
-      if (!fertig) el.innerHTML = target + suffixHTML;
+      if (!fertig && el.getAttribute("data-counting") === "1") el.innerHTML = target + suffixHTML;
     }, duration + 900);
   }
 
@@ -197,28 +199,38 @@
      Sie dürfen erst loslaufen, wenn man sie wirklich ansieht – sonst ist das
      Hochzählen beim zügigen Scrollen vorbei, bevor man dort ankommt. */
   if ("IntersectionObserver" in window && !reduceMotion) {
+    /* Die Zahl zählt erst hoch, wenn sie mitten im Bild steht. Verlässt sie das
+       Bild wieder, wird zurückgesetzt – beim nächsten Hinscrollen läuft die
+       Animation also erneut, statt fertig dazustehen. */
+    function zaehlerZuruecksetzen(el) {
+      if (el.getAttribute("data-counting") !== "1") return;
+      el.removeAttribute("data-counting");
+      el.innerHTML = el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
+    }
     var zaehlerIO = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        countUp(entry.target);
-        zaehlerIO.unobserve(entry.target);
+        var el = entry.target;
+        if (entry.isIntersecting && entry.intersectionRatio > 0.95) countUp(el);
+        else if (!entry.isIntersecting) zaehlerZuruecksetzen(el);
       });
-    }, { threshold: .9, rootMargin: "-12% 0px -28% 0px" });
+    }, { threshold: [0, 0.96], rootMargin: "-22% 0px -32% 0px" });
     counters.forEach(function (el) { zaehlerIO.observe(el); });
 
     /* Zweiter Weg, falls der Beobachter nicht anschlägt: beim Scrollen prüfen,
        aber erst im oberen Bildbereich – nicht schon am unteren Rand. */
-    var offeneZaehler = Array.prototype.slice.call(counters);
     var letzteZaehlerPruefung = 0;
     function pruefeZaehler() {
-      if (!offeneZaehler.length) return;
       var vh = window.innerHeight || doc.clientHeight;
-      offeneZaehler = offeneZaehler.filter(function (el) {
+      counters.forEach(function (el) {
         var r = el.getBoundingClientRect();
-        if (r.top > vh * 0.72 || r.bottom < vh * 0.12) return true;   /* noch nicht im Blick */
+        if (el.getAttribute("data-counting") === "1") {
+          /* ganz aus dem Bild gescrollt: zurücksetzen, damit es beim nächsten
+             Hinscrollen wieder hochzählt statt fertig dazustehen */
+          if (r.top > vh + 40 || r.bottom < -40) zaehlerZuruecksetzen(el);
+          return;
+        }
+        if (r.top > vh * 0.62 || r.bottom < vh * 0.2) return;   /* noch nicht mitten im Bild */
         countUp(el);
-        zaehlerIO.unobserve(el);
-        return false;
       });
     }
     window.addEventListener("scroll", function () {
