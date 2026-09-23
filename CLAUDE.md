@@ -24,6 +24,13 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   Kein Scan-/Lichtschein-Effekt (von David abgelehnt).
   Fortschrittslinien (Ablauf, Zeitleiste) enden an der Mitte der letzten Zahl, nicht am Rand.
   Jede Seite hat eine Zeichnung im Kopf (auch Impressum/Datenschutz) – keine Seite ohne.
+  ACHTUNG: `@keyframes draw` in style.css wird von ALLEN Seitenkopf-Zeichnungen gebraucht.
+  Fehlt es, bleibt auf allen Unterseiten die Zeichnung unsichtbar (ist schon passiert).
+  Tempo: Startseite und Unterseiten laufen zügig (unter ~2,5 s) – lieber mehr Stufen
+  als langsamere Bewegung. Startseite und Handy zeigen denselben Ablauf.
+  Anruf-Leiste (Anrufen/Anfrage) erscheint nicht auf der Kontaktseite – man ist schon da.
+  Sie steckt in `_build/partials/callbar.html`, build.py lässt sie bei kontakt.html weg.
+  Bei offenem Menü muss das Schließen-Kreuz sichtbar bleiben.
   Mobiles Menü und Anruf-Leiste nur über opacity/transform bewegen (kein clip-path),
   sonst ruckelt es auf dem Handy. Anruf-Leiste mit zwei Schwellen (rein ab 75 %, raus unter 45 %).
 - Mobile-first. Nach jeder Änderung auf Handybreite (320–414 px) prüfen: kein seitliches Scrollen,

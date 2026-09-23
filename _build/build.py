@@ -56,6 +56,7 @@ def build():
     head = (PARTS / "head.html").read_text(encoding="utf-8")
     header = (PARTS / "header.html").read_text(encoding="utf-8")
     footer = (PARTS / "footer.html").read_text(encoding="utf-8")
+    callbar = (PARTS / "callbar.html").read_text(encoding="utf-8")
     for f in sorted(PAGES.glob("*.html")):
         meta, body = meta_block(f.read_text(encoding="utf-8"))
         slug = f.stem
@@ -66,7 +67,8 @@ def build():
         page = page.replace("{{robots}}", meta.get("robots", ROBOTS_DEFAULT))
         page += header.replace("{{nav}}", nav_html(meta.get("nav", "")))
         page += body.strip() + "\n"
-        page += footer
+        # Auf der Kontaktseite braucht es die Anruf-Leiste nicht – man ist schon da.
+        page += footer.replace("{{callbar}}", "" if slug == "kontakt" else callbar)
         (ROOT / f"{slug}.html").write_text(page, encoding="utf-8")
         print("gebaut:", f"{slug}.html")
 
