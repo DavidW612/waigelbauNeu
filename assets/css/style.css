@@ -286,49 +286,47 @@ p { margin: 0 0 1em; }
 @keyframes lineUp { to { transform: translateY(0); } }
 @keyframes fadeUp { to { opacity: 1; transform: none; } }
 
-/* Rohbau-Zeichnung
-   Die Zeichnung startet erst, wenn sie im Bild ist (Klasse .is-drawing aus main.js).
-   Ohne JavaScript läuft sie direkt beim Laden. */
+/* Rohbau auf der Startseite: isometrisch, baut sich Geschoss für Geschoss auf.
+   Startet erst, wenn er im Bild ist (Klasse .is-drawing aus main.js).
+   Bewusst anders als die gezeichnete Seitenansicht auf den Unterseiten. */
 .hero__visual { position: relative; will-change: transform; }
 .blueprint { width: 100%; height: auto; overflow: visible; }
-.blueprint .bp-line { fill: none; stroke: rgba(244, 241, 236, .7); stroke-width: 1.4; stroke-linecap: square; }
-.blueprint .bp-soft { stroke: rgba(244, 241, 236, .22); stroke-width: 1; }
-.blueprint .bp-accent { stroke: var(--blau-hell); stroke-width: 2.2; }
-.blueprint .bp-fill { fill: rgba(47, 111, 208, .08); stroke: none; opacity: 0; }
-.blueprint .bp-blink { fill: var(--blau-hell); opacity: 0; }
-.blueprint .bp-dim { font-family: var(--font-head); font-size: 11px; letter-spacing: .12em; fill: rgba(244, 241, 236, .45); opacity: 0; }
-.blueprint [pathLength] { stroke-dasharray: 1; stroke-dashoffset: 1; }
 
-.blueprint.is-drawing [pathLength],
-html:not(.js) .blueprint [pathLength] { animation: draw 2.2s var(--ease) forwards; }
-.blueprint.is-drawing .s1, html:not(.js) .blueprint .s1 { animation-delay: .1s; }
-.blueprint.is-drawing .s2, html:not(.js) .blueprint .s2 { animation-delay: .4s; }
-.blueprint.is-drawing .s3, html:not(.js) .blueprint .s3 { animation-delay: .7s; }
-.blueprint.is-drawing .s4, html:not(.js) .blueprint .s4 { animation-delay: 1s; }
-.blueprint.is-drawing .s5, html:not(.js) .blueprint .s5 { animation-delay: 1.3s; }
-.blueprint.is-drawing .s6, html:not(.js) .blueprint .s6 { animation-delay: 1.7s; }
-.blueprint.is-drawing .bp-fill, html:not(.js) .blueprint .bp-fill { animation: fadeUp 1.2s 1.5s var(--ease-out) forwards; }
-.blueprint.is-drawing .bp-dim, html:not(.js) .blueprint .bp-dim { animation: fadeUp .8s 1.8s forwards; }
-.blueprint.is-drawing .bp-blink { animation: blink 2.6s 2.4s infinite; }
-/* Last pendelt leicht, Laufkatze fährt langsam am Ausleger entlang */
-.blueprint.is-drawing .bp-hook { transform-box: fill-box; transform-origin: 50% 0; animation: hookSway 7s 2.4s var(--ease) infinite; }
-.blueprint.is-drawing .bp-trolley { animation: trolley 22s 3s var(--ease) infinite; }
-@keyframes draw { to { stroke-dashoffset: 0; } }
-@keyframes blink { 0%, 100% { opacity: .15; } 50% { opacity: .95; } }
-@keyframes hookSway { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
-@keyframes trolley { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(96px); } }
+.blueprint .iso-grid { stroke: rgba(244, 241, 236, .09); stroke-width: 1; }
+.blueprint .iso-slab { fill: rgba(47, 111, 208, .22); stroke: rgba(244, 241, 236, .55); stroke-width: 1.2; }
+.blueprint .iso-slab-side { fill: rgba(20, 22, 25, .75); stroke: rgba(244, 241, 236, .4); stroke-width: 1; }
+.blueprint .iso-wall { fill: rgba(244, 241, 236, .07); stroke: rgba(244, 241, 236, .5); stroke-width: 1.2; }
+.blueprint .iso-wall--dark { fill: rgba(10, 12, 14, .45); }
+.blueprint .iso-win { fill: rgba(47, 111, 208, .3); stroke: rgba(120, 170, 255, .55); stroke-width: 1; }
+.blueprint .iso-edge { stroke: rgba(244, 241, 236, .55); stroke-width: 1.2; }
+.blueprint .iso-edge--accent { stroke: var(--blau-hell); stroke-width: 2; }
+.blueprint .iso-dim { stroke: rgba(120, 170, 255, .6); stroke-width: 1.2; }
+.blueprint .iso-pulse { fill: var(--blau-hell); opacity: 0; }
 
-/* Lichtschein, der einmal über die Zeichnung wandert */
-.hero__visual::after {
-  content: ""; position: absolute; inset: -8% -12%; pointer-events: none; opacity: 0;
-  background: linear-gradient(105deg, transparent 38%, rgba(120, 170, 255, .16) 50%, transparent 62%);
+/* Ausgangszustand: Baugrund blass, Geschosse noch nicht gesetzt */
+.js .blueprint .iso-ground { opacity: 0; }
+.js .blueprint .iso-part { opacity: 0; }
+
+.blueprint.is-drawing .iso-ground { animation: isoGround 1s var(--ease-out) forwards; }
+.blueprint.is-drawing .iso-part { animation: isoDrop .85s var(--ease-out) forwards; }
+.blueprint.is-drawing .iso-p0 { animation-delay: .35s; }
+.blueprint.is-drawing .iso-p1 { animation-delay: .65s; }
+.blueprint.is-drawing .iso-p2 { animation-delay: .95s; }
+.blueprint.is-drawing .iso-p3 { animation-delay: 1.25s; }
+.blueprint.is-drawing .iso-dimgroup { animation-delay: 1.7s; }
+.blueprint.is-drawing .iso-pulse { animation: isoPulse 3.2s 2.1s var(--ease) infinite; }
+
+@keyframes isoGround { to { opacity: 1; } }
+@keyframes isoDrop {
+  from { opacity: 0; transform: translateY(-34px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.hero__visual.is-drawing::after { animation: sweep 9s 3s var(--ease) infinite; }
-@keyframes sweep {
-  0% { opacity: 0; transform: translateX(-60%); }
-  12% { opacity: 1; }
-  38% { opacity: 0; transform: translateX(60%); }
-  100% { opacity: 0; transform: translateX(60%); }
+@keyframes isoPulse {
+  0%, 100% { opacity: .2; transform: scale(.7); }
+  45% { opacity: .9; transform: scale(1.15); }
+}
+.blueprint .iso-pulse { transform-box: fill-box; transform-origin: 50% 50%; }
+
 }
 
 .hero__badge {
@@ -478,15 +476,18 @@ html:not(.js) .blueprint [pathLength] { animation: draw 2.2s var(--ease) forward
 
 /* ---------- Ablauf ---------- */
 .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; list-style: none; padding: 0; margin: 0; }
+/* Die Linie endet an der Mitte des letzten Kreises – nicht am Rand.
+   --line-x / --line-y setzt main.js auf die Mitte des letzten Kreises. */
 .steps::before {
-  content: ""; position: absolute; top: 27px; left: 28px; right: 28px; height: 2px;
+  content: ""; position: absolute; top: 27px; left: 28px; height: 2px;
+  width: calc(var(--line-x, 100%) - 28px);
   background: var(--beton-hell);
 }
 .steps::after {
   content: ""; position: absolute; top: 27px; left: 28px; height: 2px; width: 0;
   background: var(--blau); transition: width 1.8s var(--ease-out) .2s;
 }
-.steps.is-visible::after { width: calc(100% - 56px); }
+.steps.is-visible::after { width: calc(var(--line-x, 100%) - 28px); }
 .step { position: relative; padding-right: 26px; }
 .step__dot {
   position: relative; z-index: 2; width: 56px; height: 56px; border-radius: 50%;
@@ -506,9 +507,10 @@ html:not(.js) .blueprint [pathLength] { animation: draw 2.2s var(--ease) forward
 .step p { color: var(--text-soft); font-size: .96rem; margin: 0; }
 @media (max-width: 860px) {
   .steps { grid-template-columns: 1fr; gap: 0; }
-  .steps::before, .steps::after { top: 28px; bottom: 28px; left: 27px; right: auto; width: 2px; height: auto; }
+  .steps::before, .steps::after { top: 28px; left: 27px; right: auto; width: 2px; }
+  .steps::before { height: calc(var(--line-y, 100%) - 28px); }
   .steps::after { height: 0; bottom: auto; transition: height 1.8s var(--ease-out) .2s; }
-  .steps.is-visible::after { width: 2px; height: calc(100% - 56px); }
+  .steps.is-visible::after { width: 2px; height: calc(var(--line-y, 100%) - 28px); }
   .step { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 0 0 34px; }
   .step:last-child { padding-bottom: 0; }
   .step__dot { margin: 0; }
@@ -623,14 +625,11 @@ html:not(.js) .blueprint [pathLength] { animation: draw 2.2s var(--ease) forward
   *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0s !important; transition-duration: .01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
   .js .reveal, .js .reveal-mask { opacity: 1; transform: none; clip-path: none; }
   /* Dauerschleifen ganz abschalten statt sie nur zu beschleunigen */
-  .blueprint.is-drawing .bp-blink,
-  .blueprint.is-drawing .bp-hook,
-  .blueprint.is-drawing .bp-trolley,
-  .hero__visual.is-drawing::after,
-  .page-hero.is-drawing::after,
+  .blueprint.is-drawing .iso-pulse,
   .hero__grid,
   .region-note__radius::after { animation: none !important; }
-  .blueprint .bp-blink { opacity: .8; }
+  .blueprint .iso-pulse { opacity: .7; }
+  .js .blueprint .iso-ground, .js .blueprint .iso-part { opacity: 1; }
 }
 
 /* ---------- Barrierefreiheit ---------- */
@@ -676,18 +675,14 @@ html:not(.js) .page-hero__deco [pathLength] { animation: draw 2.4s var(--ease) f
 .page-hero__deco.is-drawing path:nth-child(2) { animation-delay: .45s; }
 .page-hero__deco.is-drawing path:nth-child(3) { animation-delay: .75s; }
 .page-hero__deco.is-drawing path:nth-child(4) { animation-delay: 1.05s; }
-/* Lichtschein über den Seitenkopf */
-.page-hero::after {
-  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0;
-  background: linear-gradient(105deg, transparent 40%, rgba(120, 170, 255, .1) 50%, transparent 60%);
-}
-.page-hero.is-drawing::after { animation: sweep 11s 2.6s var(--ease) infinite; }
 @media (max-width: 760px) {
-  /* Auf dem Handy war die Zeichnung fast unsichtbar: kräftiger und mit
-     eigenem Platz unter dem Text, damit sie ihn nicht überlagert */
-  .page-hero__deco { width: 92vw; max-width: none; right: auto; left: 50%; transform: translateX(-50%); bottom: -8px; }
+  /* Auf dem Handy läuft die Zeichnung NICHT hinter dem Text, sondern in einem
+     eigenen Streifen darunter – sonst leidet die Lesbarkeit und man sieht beides schlecht. */
+  .page-hero__deco { width: 80vw; max-width: none; right: auto; left: 50%; transform: translateX(-50%); bottom: -6px; }
   .page-hero__deco path { stroke: rgba(244, 241, 236, .42); stroke-width: 2; }
   .page-hero__deco .acc { stroke: rgba(74, 140, 235, .95); stroke-width: 2.4; }
+  /* Hintergrundraster steht still, damit nichts hinter der Schrift wandert */
+  .hero__grid { animation: none; }
 }
 
 /* ---------- Unter-Navigation (Sprungmarken) ---------- */
@@ -771,8 +766,8 @@ html:not(.js) .page-hero__deco [pathLength] { animation: draw 2.4s var(--ease) f
 
 /* ---------- Timeline (Projektentwicklung, 5 Schritte) ---------- */
 .timeline { list-style: none; padding: 0; margin: 0; position: relative; counter-reset: tl; }
-.timeline::before { content: ""; position: absolute; left: 27px; top: 10px; bottom: 10px; width: 2px; background: rgba(244, 241, 236, .12); }
-.timeline__fill { position: absolute; left: 27px; top: 10px; width: 2px; height: 0; background: var(--blau-hell); transition: height .15s linear; }
+.timeline::before { content: ""; position: absolute; left: 27px; top: 28px; width: 2px; height: calc(var(--line-y, 100%) - 28px); background: rgba(244, 241, 236, .12); }
+.timeline__fill { position: absolute; left: 27px; top: 28px; width: 2px; height: 0; background: var(--blau-hell); transition: height .15s linear; }
 .timeline li { position: relative; display: grid; grid-template-columns: 56px 1fr; gap: 26px; padding: 0 0 44px; }
 .timeline li:last-child { padding-bottom: 0; }
 .timeline__dot {
@@ -970,11 +965,13 @@ a, button, label { -webkit-tap-highlight-color: transparent; }
   .hero .lead { margin-bottom: 28px; }
   .hero__meta { margin-top: 30px; padding-top: 22px; gap: 10px; font-size: .92rem; }
   .hero__visual { max-width: 380px; margin-top: 26px; }
-  /* Zeichnung auf kleinen Displays kräftiger, sonst geht sie unter */
-  .blueprint .bp-line { stroke-width: 1.6; }
-  .blueprint .bp-soft { stroke: rgba(244, 241, 236, .3); stroke-width: 1.2; }
-  .blueprint .bp-accent { stroke-width: 2.6; }
-  .page-hero { padding: calc(var(--nav-h) + 44px) 0 150px; }
+  /* Auf kleinen Displays kräftiger, sonst geht der Rohbau unter */
+  .blueprint .iso-slab { stroke-width: 1.4; stroke: rgba(244, 241, 236, .7); }
+  .blueprint .iso-wall { stroke-width: 1.4; stroke: rgba(244, 241, 236, .62); }
+  .blueprint .iso-edge { stroke-width: 1.4; stroke: rgba(244, 241, 236, .7); }
+  .blueprint .iso-edge--accent { stroke-width: 2.4; }
+  .blueprint .iso-grid { stroke: rgba(244, 241, 236, .13); }
+  .page-hero { padding: calc(var(--nav-h) + 44px) 0 196px; }
   .page-hero h1 { font-size: clamp(2.1rem, 10vw, 2.8rem); }
   .crumbs { margin-bottom: 18px; }
 
@@ -1016,7 +1013,8 @@ a, button, label { -webkit-tap-highlight-color: transparent; }
   /* Zeitleisten */
   .timeline li { grid-template-columns: 48px 1fr; gap: 18px; padding-bottom: 34px; }
   .timeline__dot { width: 48px; height: 48px; font-size: .95rem; }
-  .timeline::before, .timeline__fill { left: 23px; }
+  .timeline::before, .timeline__fill { left: 23px; top: 24px; }
+  .timeline::before { height: calc(var(--line-y, 100%) - 24px); }
   .timeline h3 { margin-top: 8px; font-size: 1.15rem; }
   .step { grid-template-columns: 48px 1fr; gap: 18px; }
   .step__dot { width: 48px; height: 48px; font-size: .95rem; }

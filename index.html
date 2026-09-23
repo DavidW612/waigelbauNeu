@@ -92,41 +92,78 @@
     </div>
 
     <div class="hero__visual" aria-hidden="true">
-      <!-- Rohbau als Bauplan-Zeichnung, zeichnet sich selbst sobald sie im Bild ist -->
+      <!-- Rohbau baut sich Geschoss für Geschoss auf; startet erst, wenn er im Bild ist -->
       <svg class="blueprint" viewBox="0 0 560 500">
-        <rect class="bp-fill" x="96" y="296" width="328" height="84"/>
-        <!-- Gelände -->
-        <path class="bp-line bp-soft s1" pathLength="1" d="M0 470H560"/>
-        <path class="bp-line bp-soft s1" pathLength="1" d="M80 470v18h360v-18"/>
-        <!-- Außenwände -->
-        <path class="bp-line s2" pathLength="1" d="M96 470V200h328v270"/>
-        <!-- Decken -->
-        <path class="bp-line s3" pathLength="1" d="M88 380h344M88 290h344M88 200h344"/>
-        <!-- Fenster EG / OG / DG -->
-        <path class="bp-line bp-soft s4" pathLength="1" d="M124 410h40v40h-40zM196 410h40v40h-40zM284 410h40v40h-40zM356 410h40v40h-40z"/>
-        <path class="bp-line bp-soft s4" pathLength="1" d="M124 316h40v44h-40zM196 316h40v44h-40zM284 316h40v44h-40zM356 316h40v44h-40z"/>
-        <path class="bp-line bp-soft s4" pathLength="1" d="M124 226h40v44h-40zM196 226h40v44h-40zM284 226h40v44h-40zM356 226h40v44h-40z"/>
-        <path class="bp-line bp-soft s4" pathLength="1" d="M260 470V200"/>
-        <!-- Gerüst -->
-        <path class="bp-line bp-soft s3" pathLength="1" d="M74 470V178M60 470V178M60 380h14M60 290h14M60 200h14M60 470l14-90M60 380l14-90M60 290l14-90"/>
-        <!-- Kran: Turm, Ausleger, Abspannung -->
-        <path class="bp-line bp-accent s5" pathLength="1" d="M478 470V62M492 470V62M478 440l14-30-14-30 14-30-14-30 14-30-14-30 14-30-14-30 14-30-14-30 14-30-14-30"/>
-        <path class="bp-line bp-accent s5" pathLength="1" d="M300 62h250M300 48h250M300 62l14-14 14 14 14-14 14 14 14-14 14 14 14-14 14 14 14-14 14 14 14-14 14 14 14-14 14 14 14-14 14 14 14-14"/>
-        <path class="bp-line bp-accent s5" pathLength="1" d="M485 20 470 48M485 20l15 28M485 20 300 48M485 20l65 28"/>
-        <path class="bp-line bp-accent s5" pathLength="1" d="M520 62v26h30V62"/>
-        <!-- Laufkatze mit Haken: fährt am Ausleger entlang, Last pendelt leicht -->
-        <g class="bp-trolley">
-          <path class="bp-line bp-accent s5" pathLength="1" d="M338 56h24v10h-24z"/>
-          <g class="bp-hook">
-            <path class="bp-line s5" pathLength="1" d="M350 66v88M342 154h16l-8 12z"/>
-            <path class="bp-line bp-accent s6" pathLength="1" d="M330 172h40v26h-40z"/>
-          </g>
-        </g>
-        <!-- Bemaßung -->
-        <path class="bp-line bp-soft s5" pathLength="1" d="M96 164h328M96 158v12M424 158v12"/>
-        <!-- Positionslicht an der Kranspitze -->
-        <circle class="bp-blink" cx="485" cy="20" r="4"/>
-      </svg>
+      <g class="iso-ground">
+        <line class="iso-grid" x1="262.0" y1="240.0" x2="2.2" y2="390.0"/>
+        <line class="iso-grid" x1="262.0" y1="240.0" x2="556.4" y2="410.0"/>
+        <line class="iso-grid" x1="314.0" y1="270.0" x2="54.2" y2="420.0"/>
+        <line class="iso-grid" x1="210.0" y1="270.0" x2="504.5" y2="440.0"/>
+        <line class="iso-grid" x1="365.9" y1="300.0" x2="106.1" y2="450.0"/>
+        <line class="iso-grid" x1="158.1" y1="300.0" x2="452.5" y2="470.0"/>
+        <line class="iso-grid" x1="417.9" y1="330.0" x2="158.1" y2="480.0"/>
+        <line class="iso-grid" x1="106.1" y1="330.0" x2="400.6" y2="500.0"/>
+        <line class="iso-grid" x1="469.8" y1="360.0" x2="210.0" y2="510.0"/>
+        <line class="iso-grid" x1="54.2" y1="360.0" x2="348.6" y2="530.0"/>
+        <line class="iso-grid" x1="521.8" y1="390.0" x2="262.0" y2="540.0"/>
+        <line class="iso-grid" x1="2.2" y1="390.0" x2="296.6" y2="560.0"/>
+        <line class="iso-grid" x1="573.8" y1="420.0" x2="314.0" y2="570.0"/>
+        <line class="iso-grid" x1="-49.8" y1="420.0" x2="244.7" y2="590.0"/>
+      </g>
+      <g class="iso-part iso-p0">
+        <polygon class="iso-slab" points="262.0,300.0 435.2,400.0 296.6,480.0 123.4,380.0"/>
+        <polygon class="iso-slab-side" points="123.4,380.0 296.6,480.0 296.6,492.0 123.4,392.0"/>
+        <polygon class="iso-slab-side" points="296.6,480.0 435.2,400.0 435.2,412.0 296.6,492.0"/>
+      </g>
+      <g class="iso-part iso-p1">
+        <polygon class="iso-wall" points="123.4,380.0 296.6,480.0 296.6,422.0 123.4,322.0"/>
+        <polygon class="iso-wall iso-wall--dark" points="296.6,480.0 435.2,400.0 435.2,342.0 296.6,422.0"/>
+        <polygon class="iso-win" points="152.9,381.0 196.2,406.0 196.2,378.0 152.9,353.0"/>
+        <polygon class="iso-win" points="223.9,422.0 267.2,447.0 267.2,419.0 223.9,394.0"/>
+        <polygon class="iso-win" points="334.7,442.0 378.0,417.0 378.0,389.0 334.7,414.0"/>
+        <polygon class="iso-win" points="397.1,406.0 431.7,386.0 431.7,358.0 397.1,378.0"/>
+        <line class="iso-edge" x1="123.4" y1="380.0" x2="123.4" y2="322.0"/>
+        <line class="iso-edge iso-edge--accent" x1="296.6" y1="480.0" x2="296.6" y2="422.0"/>
+        <line class="iso-edge" x1="435.2" y1="400.0" x2="435.2" y2="342.0"/>
+        <polygon class="iso-slab" points="262.0,242.0 435.2,342.0 296.6,422.0 123.4,322.0"/>
+        <polygon class="iso-slab-side" points="123.4,322.0 296.6,422.0 296.6,431.0 123.4,331.0"/>
+        <polygon class="iso-slab-side" points="296.6,422.0 435.2,342.0 435.2,351.0 296.6,431.0"/>
+      </g>
+      <g class="iso-part iso-p2">
+        <polygon class="iso-wall" points="123.4,322.0 296.6,422.0 296.6,364.0 123.4,264.0"/>
+        <polygon class="iso-wall iso-wall--dark" points="296.6,422.0 435.2,342.0 435.2,284.0 296.6,364.0"/>
+        <polygon class="iso-win" points="152.9,323.0 196.2,348.0 196.2,320.0 152.9,295.0"/>
+        <polygon class="iso-win" points="223.9,364.0 267.2,389.0 267.2,361.0 223.9,336.0"/>
+        <polygon class="iso-win" points="334.7,384.0 378.0,359.0 378.0,331.0 334.7,356.0"/>
+        <polygon class="iso-win" points="397.1,348.0 431.7,328.0 431.7,300.0 397.1,320.0"/>
+        <line class="iso-edge" x1="123.4" y1="322.0" x2="123.4" y2="264.0"/>
+        <line class="iso-edge iso-edge--accent" x1="296.6" y1="422.0" x2="296.6" y2="364.0"/>
+        <line class="iso-edge" x1="435.2" y1="342.0" x2="435.2" y2="284.0"/>
+        <polygon class="iso-slab" points="262.0,184.0 435.2,284.0 296.6,364.0 123.4,264.0"/>
+        <polygon class="iso-slab-side" points="123.4,264.0 296.6,364.0 296.6,373.0 123.4,273.0"/>
+        <polygon class="iso-slab-side" points="296.6,364.0 435.2,284.0 435.2,293.0 296.6,373.0"/>
+      </g>
+      <g class="iso-part iso-p3">
+        <polygon class="iso-wall" points="123.4,264.0 296.6,364.0 296.6,306.0 123.4,206.0"/>
+        <polygon class="iso-wall iso-wall--dark" points="296.6,364.0 435.2,284.0 435.2,226.0 296.6,306.0"/>
+        <polygon class="iso-win" points="152.9,265.0 196.2,290.0 196.2,262.0 152.9,237.0"/>
+        <polygon class="iso-win" points="223.9,306.0 267.2,331.0 267.2,303.0 223.9,278.0"/>
+        <polygon class="iso-win" points="334.7,326.0 378.0,301.0 378.0,273.0 334.7,298.0"/>
+        <polygon class="iso-win" points="397.1,290.0 431.7,270.0 431.7,242.0 397.1,262.0"/>
+        <line class="iso-edge" x1="123.4" y1="264.0" x2="123.4" y2="206.0"/>
+        <line class="iso-edge iso-edge--accent" x1="296.6" y1="364.0" x2="296.6" y2="306.0"/>
+        <line class="iso-edge" x1="435.2" y1="284.0" x2="435.2" y2="226.0"/>
+        <polygon class="iso-slab" points="262.0,126.0 435.2,226.0 296.6,306.0 123.4,206.0"/>
+        <polygon class="iso-slab-side" points="123.4,206.0 296.6,306.0 296.6,315.0 123.4,215.0"/>
+        <polygon class="iso-slab-side" points="296.6,306.0 435.2,226.0 435.2,235.0 296.6,315.0"/>
+      </g>
+      <g class="iso-part iso-dimgroup">
+        <line class="iso-dim" x1="469.2" y1="400.0" x2="469.2" y2="226.0"/>
+        <line class="iso-dim" x1="461.2" y1="400.0" x2="477.2" y2="400.0"/>
+        <line class="iso-dim" x1="461.2" y1="226.0" x2="477.2" y2="226.0"/>
+      </g>
+      <circle class="iso-pulse" cx="296.6" cy="306.0" r="5"/>
+    </svg>
     </div>
   </div>
   <div class="scroll-hint" aria-hidden="true"></div>

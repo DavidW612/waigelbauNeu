@@ -17,7 +17,12 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
 ## Design
 - Anthrazit/Beton/Sand + Logo-Blau (#0b4ea2) als Akzent. Logos: `assets/logo.webp` (dunkel), `assets/logo-hell.webp` (hell).
 - Animationen: Scroll-Reveal per IntersectionObserver, hochzählende Zahlen, Sticky-Navigation,
-  Parallax im Hero, Kran/Rohbau-Zeichnung im Hero (rein dekorativ, ohne Maße/Beschriftung).
+  Parallax im Hero. Startseite: isometrischer Rohbau, der sich Geschoss für Geschoss aufbaut.
+  Unterseiten: gezeichnete Seitenansichten im Seitenkopf. Beide bewusst unterschiedlich halten.
+  Zeichnungen starten erst, wenn sie im Bild sind (Klasse `is-drawing` aus main.js).
+  Auf dem Handy laufen Animationen NIE hinter der Schrift – sie bekommen einen eigenen Streifen.
+  Kein Scan-/Lichtschein-Effekt (von David abgelehnt).
+  Fortschrittslinien (Ablauf, Zeitleiste) enden an der Mitte der letzten Zahl, nicht am Rand.
 - Mobile-first. Nach jeder Änderung auf Handybreite (320–414 px) prüfen: kein seitliches Scrollen,
   Tap-Flächen groß genug. Hover-Effekte nur für Maus (`@media (hover: hover/none)`).
 
@@ -25,7 +30,8 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
 - Nie von Subunternehmern sprechen. Aber auch nichts behaupten, was nicht belegt ist
   (z. B. keine Zahlen zu Mitarbeitern oder Maschinen).
 - Maschinen nur allgemein: „eigene Baumaschinen“ / „eigener Maschinenpark“ – keine Anzahl, keine Typen.
-- Einsatzgebiet: Heidekreis, Landkreis Celle, ganz Niedersachsen, größere Projekte auch überregional.
+- Einsatzgebiet: Munster und rund 60 km Umkreis (u. a. Soltau, Bergen, Celle, Uelzen, Walsrode,
+  Lüneburg), größere Bauvorhaben auch darüber hinaus. Keine Landkreis-Aufzählung mehr.
 - Referenz Celle (Rohbau Mehrfamilienhaus, 6 WE) war ein KLEINER Auftrag – nie als Hauptreferenz
   herausstellen, nicht auf der Startseite, nicht in Kennzahlen. Größere Projekte folgen noch.
 - Zwei Zielgruppen sauber trennen: Bauherren/Bauträger (Neubau, Sanierung) vs. Investoren
@@ -39,7 +45,9 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   `robots.txt` auf Allow, Entwurfs-Hinweis aus `_build/partials/header.html`.
 - Gelb markierte `<span class="todo">`-Stellen füllen (Projekte, Impressum, Zitat, Datenschutz).
 - Hinweis „Entwurf · Fotos sind Platzhalter“ in `_build/partials/header.html` entfernen.
-- Formular-Endpunkt in `_build/pages/kontakt.html` (`data-endpoint`) eintragen.
+- Kontaktformular: geht über `kontakt.php` per E-Mail an info@waigelbau.de.
+  Braucht PHP, läuft also erst auf dem Webspace – in der lokalen Vorschau erscheint ein Hinweis.
+  Nach dem ersten Upload einmal echt testen (auch Spam-Ordner prüfen).
 - Impressum: Betreiber/Rechtsform, USt-IdNr., ggf. Handwerkskammer ergänzen.
 
 ## Hosting, Domain und Livegang – NICHT ANFASSEN

@@ -103,9 +103,10 @@
     </aside>
 
     <div class="form contact__form reveal" style="--delay:.1s">
-      <!-- data-endpoint: Formular-Empfänger eintragen, sobald das Hosting feststeht
-           (z. B. https://api.web3forms.com/submit oder /kontakt.php) -->
-      <form data-contact data-endpoint="" novalidate>
+      <!-- Anfragen gehen per kontakt.php an info@waigelbau.de.
+           kontakt.php braucht PHP und läuft deshalb erst auf dem Webspace,
+           nicht in der lokalen Vorschau. -->
+      <form data-contact data-endpoint="kontakt.php" novalidate>
         <h2>Anfrage senden</h2>
         <p style="color:var(--text-soft);margin-bottom:28px">Felder mit * sind Pflichtfelder.</p>
 

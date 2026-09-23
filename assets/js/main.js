@@ -181,15 +181,38 @@
     Object.keys(map).forEach(function (id) { spy.observe(document.getElementById(id)); });
   }
 
+  /* ---- Linien enden an der letzten Zahl, nicht am Rand ----
+     Gemessen wird die Mitte des letzten Kreises; das CSS rechnet damit. */
+  function measureLine(container, dotSelector) {
+    var dots = container.querySelectorAll(dotSelector);
+    if (!dots.length) return;
+    var last = dots[dots.length - 1];
+    var cr = container.getBoundingClientRect(), lr = last.getBoundingClientRect();
+    container.style.setProperty("--line-x", (lr.left - cr.left + lr.width / 2) + "px");
+    container.style.setProperty("--line-y", (lr.top - cr.top + lr.height / 2) + "px");
+  }
+  var lineBlocks = [];
+  document.querySelectorAll(".steps").forEach(function (el) { lineBlocks.push([el, ".step__dot"]); });
+  document.querySelectorAll(".timeline").forEach(function (el) { lineBlocks.push([el, ".timeline__dot"]); });
+  function measureAllLines() { lineBlocks.forEach(function (b) { measureLine(b[0], b[1]); }); }
+  if (lineBlocks.length) {
+    measureAllLines();
+    window.addEventListener("resize", measureAllLines);
+    window.addEventListener("load", measureAllLines);
+  }
+
   /* ---- Timeline füllt sich beim Scrollen ---- */
   var timeline = document.querySelector(".timeline");
   var tlFill = timeline && timeline.querySelector(".timeline__fill");
   function updateTimeline() {
     if (!tlFill) return;
     var r = timeline.getBoundingClientRect();
+    var top = parseFloat(getComputedStyle(timeline.querySelector(".timeline__fill")).top) || 28;
+    var end = parseFloat(timeline.style.getPropertyValue("--line-y")) || r.height;
+    var len = Math.max(end - top, 0);
     var vh = window.innerHeight;
-    var p = Math.min(Math.max((vh * 0.6 - r.top) / (r.height - 20), 0), 1);
-    tlFill.style.height = (p * (r.height - 20)) + "px";
+    var p = Math.min(Math.max((vh * 0.6 - r.top - top) / len, 0), 1);
+    tlFill.style.height = (p * len) + "px";
   }
   if (tlFill) { window.addEventListener("scroll", function () { window.requestAnimationFrame(updateTimeline); }, { passive: true }); updateTimeline(); }
 
@@ -236,8 +259,23 @@
       }
       btn.disabled = true; btn.classList.add("is-loading");
       fetch(endpoint, { method: "POST", body: new FormData(form), headers: { "Accept": "application/json" } })
-        .then(function (r) { if (!r.ok) throw new Error(r.status); wrap.classList.add("is-sent"); wrap.scrollIntoView({ behavior: "smooth", block: "center" }); })
+        .then(function (r) { return r.text().then(function (t) { return { ok: r.ok, text: t }; }); })
+        .then(function (res) {
+          /* Nur als gesendet melden, wenn der Server das auch bestätigt */
+          var data = null;
+          try { data = JSON.parse(res.text); } catch (e) { /* keine JSON-Antwort */ }
+          if (!res.ok || !data || data.ok !== true) throw new Error("kein Versand");
+          wrap.classList.add("is-sent");
+          wrap.scrollIntoView({ behavior: "smooth", block: "center" });
+        })
         .catch(function () {
+          /* In der lokalen Vorschau gibt es kein PHP – das ist kein echter Fehler */
+          var vorschau = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === "file:";
+          if (vorschau) {
+            status.textContent = "Vorschau: Der Versand an info@waigelbau.de läuft erst auf dem Webspace (dort gibt es PHP). Das Formular selbst funktioniert.";
+            status.classList.add("is-info");
+            return;
+          }
           status.innerHTML = 'Die Nachricht konnte leider nicht gesendet werden. Bitte rufen Sie uns an (<a href="tel:+491729502318">+49 172 9502318</a>) oder schreiben Sie an <a href="mailto:info@waigelbau.de">info@waigelbau.de</a>.';
           status.classList.add("is-error");
         })
