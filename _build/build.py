@@ -16,6 +16,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 PAGES = ROOT / "_build" / "pages"
 PARTS = ROOT / "_build" / "partials"
 
+# Solange die Seite ein Entwurf ist: nicht von Suchmaschinen aufnehmen lassen.
+# Vor dem Livegang auf "index, follow" stellen (und robots.txt anpassen).
+ROBOTS_DEFAULT = "noindex, nofollow"
+
 NAV = [
     ("leistungen", "leistungen.html", "Leistungen"),
     ("referenzen", "referenzen.html", "Referenzen"),
@@ -59,7 +63,7 @@ def build():
         page = head.replace("{{title}}", meta.get("title", "Waigel-Baukoordination"))
         page = page.replace("{{description}}", meta.get("description", ""))
         page = page.replace("{{canonical}}", canonical)
-        page = page.replace("{{robots}}", meta.get("robots", "index, follow"))
+        page = page.replace("{{robots}}", meta.get("robots", ROBOTS_DEFAULT))
         page += header.replace("{{nav}}", nav_html(meta.get("nav", "")))
         page += body.strip() + "\n"
         page += footer

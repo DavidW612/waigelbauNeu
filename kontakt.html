@@ -5,13 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Kontakt &amp; Anfrage | Waigel-Baukoordination</title>
   <meta name="description" content="Kontakt zu Waigel-Baukoordination in Munster: Telefon +49 172 9502318, info@waigelbau.de – oder direkt über das Anfrageformular.">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#1c1e21">
   <link rel="canonical" href="https://waigelbau.de/kontakt.html">
   <meta property="og:title" content="Kontakt &amp; Anfrage | Waigel-Baukoordination">
   <meta property="og:description" content="Kontakt zu Waigel-Baukoordination in Munster: Telefon +49 172 9502318, info@waigelbau.de – oder direkt über das Anfrageformular.">
   <meta property="og:type" content="website">
   <meta property="og:locale" content="de_DE">
+  <meta property="og:url" content="https://waigelbau.de/kontakt.html">
+  <meta property="og:site_name" content="Waigel-Baukoordination">
   <meta property="og:image" content="https://waigelbau.de/assets/logo.png">
   <link rel="preload" href="assets/fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
@@ -27,7 +29,11 @@
     "telephone": "+49 172 9502318",
     "email": "info@waigelbau.de",
     "address": { "@type": "PostalAddress", "streetAddress": "Fritz-Reuter-Str. 16", "postalCode": "29633", "addressLocality": "Munster", "addressRegion": "Niedersachsen", "addressCountry": "DE" },
-    "areaServed": ["Heidekreis", "Landkreis Celle", "Niedersachsen"]
+    "areaServed": {
+      "@type": "GeoCircle",
+      "geoMidpoint": { "@type": "GeoCoordinates", "latitude": 52.9861, "longitude": 10.0894 },
+      "geoRadius": 60000
+    }
   }
   </script>
 </head>
@@ -178,12 +184,20 @@
     </div>
       <div class="contact__region reveal">
         <p class="eyebrow">Einsatzgebiet</p>
-        <p style="color:var(--text-soft);margin:0">Heidekreis, Landkreis Celle und ganz Niedersachsen – größere Projekte auch überregional.</p>
-        <ul class="region">
-          <li class="is-main">Heidekreis</li>
-          <li>Landkreis Celle</li>
-          <li>Niedersachsen</li>
-        </ul>
+        <div class="region-note">
+          <div class="region-note__radius" aria-hidden="true">
+            <svg viewBox="0 0 80 80">
+              <circle class="region-note__ring" cx="40" cy="40" r="32"/>
+              <circle class="region-note__ring region-note__ring--2" cx="40" cy="40" r="21"/>
+              <circle class="region-note__dot" cx="40" cy="40" r="4.5"/>
+            </svg>
+            <strong>60 km</strong>
+          </div>
+          <div>
+            <p>Wir arbeiten von Munster aus in einem Umkreis von rund 60 Kilometern – unter anderem in Soltau, Bergen, Celle, Uelzen, Walsrode und Lüneburg.</p>
+            <p class="region-note__more">Größere Bauvorhaben übernehmen wir auch darüber hinaus. Fragen Sie einfach an.</p>
+          </div>
+        </div>
       </div>
   </div>
 </section>
@@ -194,7 +208,7 @@
     <div class="footer__grid">
       <div class="footer__brand">
         <img class="footer__logo" src="assets/logo-hell.webp" alt="Waigel-Baukoordination" width="900" height="251" loading="lazy">
-        <p>Neubau und Sanierung im Heidekreis, im Landkreis Celle und in ganz Niedersachsen.</p>
+        <p>Neubau und Sanierung von Munster aus – im Umkreis von rund 60 Kilometern, größere Projekte auch darüber hinaus.</p>
       </div>
       <div>
         <h4>Kontakt</h4>

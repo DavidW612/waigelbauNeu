@@ -53,10 +53,18 @@
   }
 
   /* ---- Hochzählende Zahlen ---- */
+  /* Zahlen stehen im HTML korrekt (auch ohne JS). Das Suffix (z. B. „+“ oder „%“)
+     wird gemerkt, bevor der Zähler auf 0 gesetzt wird. */
+  var counters = document.querySelectorAll("[data-count]");
+  counters.forEach(function (el) {
+    var s = el.querySelector("small");
+    el.setAttribute("data-suffix", s ? s.outerHTML : "");
+    if (!reduceMotion && "IntersectionObserver" in window) el.innerHTML = "0" + el.getAttribute("data-suffix");
+  });
+
   function countUp(el) {
     var target = parseFloat(el.getAttribute("data-count"));
-    var suffix = el.querySelector("small");
-    var suffixHTML = suffix ? suffix.outerHTML : "";
+    var suffixHTML = el.getAttribute("data-suffix") || "";
     if (reduceMotion) { el.innerHTML = target + suffixHTML; return; }
     var duration = 1800, start = null;
     function frame(ts) {
@@ -69,9 +77,31 @@
     window.requestAnimationFrame(frame);
   }
 
-  /* Zahlen stehen im HTML korrekt (auch ohne JS) – erst hier für die Animation auf 0 setzen */
-  if (!reduceMotion && "IntersectionObserver" in window) {
-    document.querySelectorAll("[data-count]").forEach(function (el) { el.textContent = "0"; });
+  /* ---- Zeichnungen erst starten, wenn sie im Bild sind ----
+     Auf dem Handy steht die Hero-Zeichnung unter dem Text. Ohne das hier wäre
+     sie fertig gezeichnet, bevor man überhaupt hinscrollt. */
+  var drawings = [];
+  var blueprint = document.querySelector(".blueprint");
+  if (blueprint) drawings.push([blueprint, blueprint.closest(".hero__visual")]);
+  var deco = document.querySelector(".page-hero__deco");
+  if (deco) drawings.push([deco, deco.closest(".page-hero")]);
+
+  function startDrawing(pair) {
+    pair.forEach(function (el) { if (el) el.classList.add("is-drawing"); });
+  }
+  if (drawings.length) {
+    if ("IntersectionObserver" in window) {
+      var drawIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          drawings.forEach(function (pair) { if (pair[0] === entry.target) startDrawing(pair); });
+          drawIO.unobserve(entry.target);
+        });
+      }, { threshold: .25 });
+      drawings.forEach(function (pair) { drawIO.observe(pair[0]); });
+    } else {
+      drawings.forEach(startDrawing);
+    }
   }
 
   /* ---- Scroll-Reveal ---- */
@@ -98,17 +128,54 @@
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); });
 
   /* ---- Sprungmarken-Navigation: aktiven Abschnitt markieren ---- */
+  var subnav = document.querySelector(".subnav");
   var subLinks = document.querySelectorAll(".subnav a[href^='#']");
+
+  /* Sprungziele dürfen nicht unter der Kopf- und der Abschnittsleiste liegen */
+  if (subnav) {
+    var setScrollPad = function () {
+      doc.style.scrollPaddingTop = (68 + subnav.offsetHeight + 10) + "px";
+    };
+    setScrollPad();
+    window.addEventListener("resize", setScrollPad);
+  }
+
   if (subLinks.length && "IntersectionObserver" in window) {
     var map = {};
+    var list = subnav ? subnav.querySelector("ul") : null;
+    var lockUntil = 0;
     subLinks.forEach(function (a) { var t = document.querySelector(a.getAttribute("href")); if (t) map[t.id] = a; });
+
+    /* Nur die Leiste selbst waagerecht verschieben – niemals die Seite scrollen.
+       (scrollIntoView hat die Seite beim Antippen kurz nach unten und sofort
+       wieder nach oben gesprungen.) */
+    function centerLink(a, instant) {
+      if (!list || list.scrollWidth <= list.clientWidth + 4) return;
+      var lr = list.getBoundingClientRect(), ar = a.getBoundingClientRect();
+      var delta = (ar.left + ar.width / 2) - (lr.left + lr.width / 2);
+      if (Math.abs(delta) < 8) return;
+      /* Beim Antippen ohne weiche Bewegung: sonst bricht sie das weiche
+         Scrollen der Seite zum Abschnitt ab und es ruckelt. */
+      if (!instant && !reduceMotion && list.scrollBy) list.scrollBy({ left: delta, behavior: "smooth" });
+      else list.scrollLeft += delta;
+    }
+
+    function setActive(a, instant) {
+      subLinks.forEach(function (x) { x.classList.remove("is-active"); });
+      a.classList.add("is-active");
+      centerLink(a, instant);
+    }
+
+    /* Beim Antippen sofort markieren und den Beobachter kurz ruhigstellen,
+       damit die durchlaufenden Abschnitte die Markierung nicht überschreiben */
+    subLinks.forEach(function (a) {
+      a.addEventListener("click", function () { lockUntil = Date.now() + 900; setActive(a, true); });
+    });
+
     var spy = new IntersectionObserver(function (entries) {
+      if (Date.now() < lockUntil) return;
       entries.forEach(function (e) {
-        if (e.isIntersecting && map[e.target.id]) {
-          subLinks.forEach(function (a) { a.classList.remove("is-active"); });
-          map[e.target.id].classList.add("is-active");
-          map[e.target.id].scrollIntoView({ block: "nearest", inline: "center", behavior: reduceMotion ? "auto" : "smooth" });
-        }
+        if (e.isIntersecting && map[e.target.id]) setActive(map[e.target.id]);
       });
     }, { rootMargin: "-40% 0px -55% 0px" });
     Object.keys(map).forEach(function (id) { spy.observe(document.getElementById(id)); });

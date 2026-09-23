@@ -1,0 +1,7 @@
+# Entwurf: Die Seite soll noch nicht bei Google & Co. auftauchen.
+# Vor dem Livegang ersetzen durch:
+#   User-agent: *
+#   Allow: /
+# und in _build/build.py ROBOTS_DEFAULT auf "index, follow" stellen.
+User-agent: *
+Disallow: /
