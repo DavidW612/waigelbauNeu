@@ -34,6 +34,9 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
 
 ## Offen vor dem Livegang
 - Fotos: alle Platzhalter (gelb „Foto-Platzhalter“) durch echte Baustellenfotos ersetzen.
+  David legt Fotos in `assets/bilder/` ab (Anleitung dort in LIESMICH.md).
+- Entwurfsschutz aufheben: `ROBOTS_DEFAULT` in `_build/build.py` auf "index, follow",
+  `robots.txt` auf Allow, Entwurfs-Hinweis aus `_build/partials/header.html`.
 - Gelb markierte `<span class="todo">`-Stellen füllen (Projekte, Impressum, Zitat, Datenschutz).
 - Hinweis „Entwurf · Fotos sind Platzhalter“ in `_build/partials/header.html` entfernen.
 - Hosting: IONOS-Webspace. GitHub Action `.github/workflows/deploy-ionos.yml` : Push auf main = nur Verbindungstest, KEIN Upload. Live-Upload nur manuell (Actions → Run workflow → Modus „live“) – Seite darf erst nach Freigabe durch David live gehen! Noch
