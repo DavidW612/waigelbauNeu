@@ -199,19 +199,14 @@
      Sie dürfen erst loslaufen, wenn man sie wirklich ansieht – sonst ist das
      Hochzählen beim zügigen Scrollen vorbei, bevor man dort ankommt. */
   if ("IntersectionObserver" in window && !reduceMotion) {
-    /* Die Zahl zählt erst hoch, wenn sie mitten im Bild steht. Verlässt sie das
-       Bild wieder, wird zurückgesetzt – beim nächsten Hinscrollen läuft die
-       Animation also erneut, statt fertig dazustehen. */
-    function zaehlerZuruecksetzen(el) {
-      if (el.getAttribute("data-counting") !== "1") return;
-      el.removeAttribute("data-counting");
-      el.innerHTML = el.getAttribute("data-count") + (el.getAttribute("data-suffix") || "");
-    }
+    /* Die Zahl zählt genau einmal hoch, sobald sie mitten im Bild steht –
+       nicht schon am unteren Rand, sonst ist die Animation vorbei, bevor man
+       hinsieht. Danach bleibt sie stehen, wie die übrigen Animationen auch. */
     var zaehlerIO = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        var el = entry.target;
-        if (entry.isIntersecting && entry.intersectionRatio > 0.95) countUp(el);
-        else if (!entry.isIntersecting) zaehlerZuruecksetzen(el);
+        if (!entry.isIntersecting || entry.intersectionRatio <= 0.95) return;
+        countUp(entry.target);
+        zaehlerIO.unobserve(entry.target);
       });
     }, { threshold: [0, 0.96], rootMargin: "-22% 0px -32% 0px" });
     counters.forEach(function (el) { zaehlerIO.observe(el); });
@@ -222,15 +217,11 @@
     function pruefeZaehler() {
       var vh = window.innerHeight || doc.clientHeight;
       counters.forEach(function (el) {
+        if (el.getAttribute("data-counting") === "1") return;   /* lief schon */
         var r = el.getBoundingClientRect();
-        if (el.getAttribute("data-counting") === "1") {
-          /* ganz aus dem Bild gescrollt: zurücksetzen, damit es beim nächsten
-             Hinscrollen wieder hochzählt statt fertig dazustehen */
-          if (r.top > vh + 40 || r.bottom < -40) zaehlerZuruecksetzen(el);
-          return;
-        }
         if (r.top > vh * 0.62 || r.bottom < vh * 0.2) return;   /* noch nicht mitten im Bild */
         countUp(el);
+        zaehlerIO.unobserve(el);
       });
     }
     window.addEventListener("scroll", function () {

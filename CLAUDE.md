@@ -48,8 +48,8 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
 - Hochzählende Zahlen haben einen EIGENEN Auslöser (nicht das allgemeine Scroll-Reveal!).
   Das Reveal blendet bewusst früh ein, die Zahlen brauchen das Gegenteil: Start erst,
   wenn sie mitten im Bild stehen (62 % der Höhe), sonst ist das Hochzählen beim zügigen
-  Scrollen vorbei, bevor man hinsieht. Scrollt man wieder weg, wird zurückgesetzt –
-  beim nächsten Hinscrollen zählt es erneut hoch. Dauer: 1,4 s. Die echten Zahlen
+  Scrollen vorbei, bevor man hinsieht. Läuft genau einmal pro Seitenaufruf (wie alle
+  anderen Animationen auch), kein Zurücksetzen beim Hoch- und Runterscrollen. Dauer: 1,4 s. Die echten Zahlen
   stehen im HTML und werden erst beim Start auf 0 gesetzt – so bleibt nie eine 0 stehen.
 
 ## Inhaltliche Regeln
