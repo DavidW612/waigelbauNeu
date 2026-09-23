@@ -39,9 +39,21 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   `robots.txt` auf Allow, Entwurfs-Hinweis aus `_build/partials/header.html`.
 - Gelb markierte `<span class="todo">`-Stellen füllen (Projekte, Impressum, Zitat, Datenschutz).
 - Hinweis „Entwurf · Fotos sind Platzhalter“ in `_build/partials/header.html` entfernen.
-- Hosting: IONOS-Webspace. GitHub Action `.github/workflows/deploy-ionos.yml` : Push auf main = nur Verbindungstest, KEIN Upload. Live-Upload nur manuell (Actions → Run workflow → Modus „live“) – Seite darf erst nach Freigabe durch David live gehen! Noch
-  Formular-Endpunkt in `_build/pages/kontakt.html` (`data-endpoint`) eintragen.
+- Formular-Endpunkt in `_build/pages/kontakt.html` (`data-endpoint`) eintragen.
 - Impressum: Betreiber/Rechtsform, USt-IdNr., ggf. Handwerkskammer ergänzen.
+
+## Hosting, Domain und Livegang – NICHT ANFASSEN
+Das gesamte Hosting-, DNS- und Livegang-Setup wird in einem **separaten Cowork** verwaltet,
+nicht in diesem Chat. Tabu sind deshalb:
+- Custom Domain, DNS, jede `CNAME`-Datei
+- GitHub-Pages-Einstellungen (Settings → Pages)
+- `.github/workflows/deploy-ionos.yml` – bleibt wie er ist: Push auf main = nur
+  Verbindungstest, KEIN Upload; echter Upload nur manuell (Actions → Run workflow → Modus „live“)
+
+Wenn eine Aufgabe eine CNAME-Datei, Domain-Konfiguration oder Workflow-Änderung nötig
+erscheinen lässt: **nicht selbst machen**, sondern David kurz sagen, was man vorhätte, und
+auf seine Antwort warten. Die Seite darf noch nicht unter waigelbau.de live gehen.
+Inhaltliche Arbeit an Seiten, CSS, JS und Build läuft davon unberührt normal weiter.
 
 ## Arbeitsweise
 - Jede Änderung als eigener Commit mit kurzer deutscher Beschreibung, danach pushen
