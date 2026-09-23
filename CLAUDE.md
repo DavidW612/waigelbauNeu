@@ -23,6 +23,9 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   Auf dem Handy laufen Animationen NIE hinter der Schrift – sie bekommen einen eigenen Streifen.
   Kein Scan-/Lichtschein-Effekt (von David abgelehnt).
   Fortschrittslinien (Ablauf, Zeitleiste) enden an der Mitte der letzten Zahl, nicht am Rand.
+  Jede Seite hat eine Zeichnung im Kopf (auch Impressum/Datenschutz) – keine Seite ohne.
+  Mobiles Menü und Anruf-Leiste nur über opacity/transform bewegen (kein clip-path),
+  sonst ruckelt es auf dem Handy. Anruf-Leiste mit zwei Schwellen (rein ab 75 %, raus unter 45 %).
 - Mobile-first. Nach jeder Änderung auf Handybreite (320–414 px) prüfen: kein seitliches Scrollen,
   Tap-Flächen groß genug. Hover-Effekte nur für Maus (`@media (hover: hover/none)`).
 

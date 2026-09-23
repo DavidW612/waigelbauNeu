@@ -12,7 +12,14 @@
   function onScroll() {
     var y = window.scrollY || window.pageYOffset;
     if (nav) nav.classList.toggle("is-scrolled", y > 40);
-    if (callbar) callbar.classList.toggle("is-visible", y > window.innerHeight * 0.6);
+    /* Anruf-Leiste mit zwei Schwellen: erscheint weiter unten, verschwindet
+       erst wieder deutlich darüber. Sonst flackert sie beim Hin- und Herwischen. */
+    if (callbar) {
+      var vh = window.innerHeight;
+      var sichtbar = callbar.classList.contains("is-visible");
+      if (!sichtbar && y > vh * 0.75) callbar.classList.add("is-visible");
+      else if (sichtbar && y < vh * 0.45) callbar.classList.remove("is-visible");
+    }
     parallax(y);
     ticking = false;
   }
@@ -89,6 +96,10 @@
   function startDrawing(pair) {
     pair.forEach(function (el) { if (el) el.classList.add("is-drawing"); });
   }
+  function imBild(el) {
+    var r = el.getBoundingClientRect();
+    return r.bottom > 0 && r.top < (window.innerHeight || doc.clientHeight);
+  }
   if (drawings.length) {
     if ("IntersectionObserver" in window) {
       var drawIO = new IntersectionObserver(function (entries) {
@@ -97,8 +108,19 @@
           drawings.forEach(function (pair) { if (pair[0] === entry.target) startDrawing(pair); });
           drawIO.unobserve(entry.target);
         });
-      }, { threshold: .25 });
+      }, { threshold: .15 });
       drawings.forEach(function (pair) { drawIO.observe(pair[0]); });
+      /* Sicherheitsnetz: Steht die Zeichnung beim Laden schon im Bild (auf den
+         Unterseiten der Fall), startet sie auch dann, wenn der Beobachter
+         nicht anschlägt – sonst passiert im Seitenkopf gar nichts. */
+      window.setTimeout(function () {
+        drawings.forEach(function (pair) {
+          if (!pair[0].classList.contains("is-drawing") && imBild(pair[0])) {
+            startDrawing(pair);
+            drawIO.unobserve(pair[0]);
+          }
+        });
+      }, 400);
     } else {
       drawings.forEach(startDrawing);
     }
