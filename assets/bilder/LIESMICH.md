@@ -3,6 +3,23 @@
 Alle Baustellen- und Projektfotos für die Website einfach in diesen Ordner legen
 (`assets/bilder/`). Danach Bescheid sagen – der Einbau in die Seiten passiert dann hier.
 
+## Stand: was schon eingebaut ist
+Diese fünf Fotos sind aufbereitet und stehen auf der Website:
+- **Neubau 2 Soltau** → Startseite (Neubau), Leistungen (Neubau), Referenzen
+- **Sanierung** (Kran mit Wandelement) → Startseite (Sanierung), Leistungen (Sanierung)
+- **Sanierung 2** (Bodenplatte) → Startseite und Referenzen
+- **Sanierung 3** (Wandelement hochkant) → Leistungen (Sanierung, am Rechner)
+- **Neubau Munster** → Referenzen, Hauptbild
+
+## Was noch fehlt (wichtigste zuerst)
+1. **Porträt von Eugen**, am besten auf der Baustelle – die größte Lücke,
+   weil die ganze Seite mit „ein fester Ansprechpartner“ argumentiert.
+2. **Nahaufnahmen**: Mauerwerk, Klinkerfugen, Schalung, Bewehrung.
+3. **Menschen bei der Arbeit** (mit Einverständnis der Abgebildeten).
+4. **Zweites Hochformat** für die Neubau-Spalte auf der Leistungsseite.
+5. **Vorher/Nachher** einer Sanierung.
+6. Drei weitere **Projektfotos** für die Referenzseite.
+
 ## Was gebraucht wird
 | Wofür | Anzahl | Format | Hinweis |
 |---|---|---|---|
@@ -21,6 +38,11 @@ Alle Baustellen- und Projektfotos für die Website einfach in diesen Ordner lege
 - Keine fremden Bilder aus dem Internet – nur eigene Fotos.
 - Sind Personen erkennbar, brauchen wir deren Einverständnis.
 - Dateinamen egal, aber hilfreich ist etwas wie `celle-rohbau-01.jpg`.
+
+## Technischer Ablauf (macht Claude)
+Die Originale bleiben hier liegen und gehen **nicht** mit auf die Website.
+`python _build/bilder.py` schneidet sie zu und legt kleine Web-Fassungen in
+`assets/img/` ab – je eine für Handy und Rechner.
 
 ## Dazuschreiben
 Zu jedem Projekt kurz: **Ort, Art (Neubau/Sanierung), was gemacht wurde, wann.**

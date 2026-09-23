@@ -60,8 +60,14 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
 - Investoren-Seite: keine Renditeversprechen; der Hinweis „kein öffentliches Angebot“ bleibt drin.
 
 ## Offen vor dem Livegang
-- Fotos: alle Platzhalter (gelb „Foto-Platzhalter“) durch echte Baustellenfotos ersetzen.
-  David legt Fotos in `assets/bilder/` ab (Anleitung dort in LIESMICH.md).
+- Fotos: David legt Originale in `assets/bilder/` ab (Anleitung dort in LIESMICH.md).
+  `python _build/bilder.py` schneidet zu und erzeugt die Web-Fassungen in `assets/img/`
+  (WebP, je klein/gross). Neue Fotos in der Liste BILDER in `_build/bilder.py` eintragen.
+  Originale sind über .gitignore vom Repo und damit vom Upload ausgeschlossen.
+  Noch offene Platzhalter: Porträt Eugen (Über uns), Projektentwicklung,
+  drei Karten auf der Referenzseite.
+- Keine Stockfotos verwenden (liegen in `assets/bilder/Stock falls nötig/`): wirken unecht
+  neben den echten Baustellenbildern und brauchen eine Lizenz samt Urhebernennung.
 - Entwurfsschutz aufheben: `ROBOTS_DEFAULT` in `_build/build.py` auf "index, follow",
   `robots.txt` auf Allow, Entwurfs-Hinweis aus `_build/partials/header.html`.
 - Gelb markierte `<span class="todo">`-Stellen füllen (Projekte, Impressum, Zitat, Datenschutz).

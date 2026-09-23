@@ -61,7 +61,7 @@
 </header>
 
 <!-- ENTWURF: Hinweis vor dem Livegang entfernen -->
-<div class="draft-note" role="note">Entwurf · Fotos sind Platzhalter</div>
+<div class="draft-note" role="note">Entwurf · einzelne Fotos fehlen noch</div>
 
 <main id="main">
 <!-- ========== HERO ========== -->
@@ -197,11 +197,10 @@
       <article class="service reveal">
         <div class="service__media">
           <span class="service__num">01</span>
-          <div class="ph" role="img" aria-label="Foto-Platzhalter Neubau">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 8"/></svg>
-            <b>Foto-Platzhalter</b>
-            <span>Rohbau / Mauerwerk – echtes Baustellenfoto einsetzen</span>
-          </div>
+          <img class="foto" src="assets/img/neubau-rohbau-gross.webp"
+               srcset="assets/img/neubau-rohbau-klein.webp 700w, assets/img/neubau-rohbau-gross.webp 1400w"
+               sizes="(max-width: 860px) 100vw, 50vw"
+               alt="Rohbau eines Wohnhauses: gemauerte Außenwände mit Fensteröffnungen">
         </div>
         <div class="service__body">
           <h3>Neubau</h3>
@@ -222,11 +221,10 @@
       <article class="service reveal" style="--delay:.12s">
         <div class="service__media">
           <span class="service__num">02</span>
-          <div class="ph" role="img" aria-label="Foto-Platzhalter Sanierung">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 8"/></svg>
-            <b>Foto-Platzhalter</b>
-            <span>Sanierung / Umbau – Vorher-Nachher wäre ideal</span>
-          </div>
+          <img class="foto" src="assets/img/sanierung-kran-gross.webp"
+               srcset="assets/img/sanierung-kran-klein.webp 700w, assets/img/sanierung-kran-gross.webp 1400w"
+               sizes="(max-width: 860px) 100vw, 50vw"
+               alt="Mobilkran hebt ein vorgefertigtes Wandelement an ein Bestandsgebäude" loading="lazy" decoding="async">
         </div>
         <div class="service__body">
           <h3>Sanierung</h3>
@@ -321,16 +319,25 @@
     </div>
     <div class="ref-grid" aria-label="Projekte – zum Blättern wischen">
       <article class="ref-card reveal">
-        <div class="ref-card__media"><div class="ph ph--dark" role="img" aria-label="Foto-Platzhalter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 8"/></svg><b>Foto-Platzhalter</b><span>Größtes Projekt</span></div></div>
-        <div class="ref-card__body"><small>Neubau · <span class="todo">Ort</span></small><h3><span class="todo">Großprojekt ergänzen</span></h3></div>
+        <div class="ref-card__media"><img class="foto" src="assets/img/neubau-munster-gross.webp"
+               srcset="assets/img/neubau-munster-klein.webp 700w, assets/img/neubau-munster-gross.webp 1400w"
+               sizes="(max-width: 640px) 82vw, 33vw"
+               alt="Fertiggestelltes Mehrfamilienhaus mit Klinkerfassade in Munster" loading="lazy" decoding="async"></div>
+        <div class="ref-card__body"><small>Neubau · Munster</small><h3>Mehrfamilienhaus <span class="todo">Angaben prüfen</span></h3></div>
       </article>
       <article class="ref-card reveal" style="--delay:.08s">
-        <div class="ref-card__media"><div class="ph" role="img" aria-label="Foto-Platzhalter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 8"/></svg><b>Foto-Platzhalter</b><span>Weiteres Projekt</span></div></div>
-        <div class="ref-card__body"><small>Sanierung · <span class="todo">Ort</span></small><h3><span class="todo">Projekt ergänzen</span></h3></div>
+        <div class="ref-card__media"><img class="foto" src="assets/img/bodenplatte-gross.webp"
+               srcset="assets/img/bodenplatte-klein.webp 700w, assets/img/bodenplatte-gross.webp 1400w"
+               sizes="(max-width: 640px) 82vw, 33vw"
+               alt="Frisch betonierte Bodenplatte mit Bewehrungsanschlüssen am Bestandsgebäude" loading="lazy" decoding="async"></div>
+        <div class="ref-card__body"><small>Beton- &amp; Erdarbeiten</small><h3>Anbau mit neuer Bodenplatte <span class="todo">Ort &amp; Jahr</span></h3></div>
       </article>
       <article class="ref-card reveal" style="--delay:.16s">
-        <div class="ref-card__media"><div class="ph" role="img" aria-label="Foto-Platzhalter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 8"/></svg><b>Foto-Platzhalter</b><span>Projektfoto</span></div></div>
-        <div class="ref-card__body"><small><span class="todo">Art · Ort</span></small><h3><span class="todo">Projekt ergänzen</span></h3></div>
+        <div class="ref-card__media"><img class="foto" src="assets/img/sanierung-kran-kasten-gross.webp"
+               srcset="assets/img/sanierung-kran-kasten-klein.webp 700w, assets/img/sanierung-kran-kasten-gross.webp 1400w"
+               sizes="(max-width: 640px) 82vw, 33vw"
+               alt="Wandelement am Kran über der Baustelle" loading="lazy" decoding="async"></div>
+        <div class="ref-card__body"><small>Sanierung</small><h3>Wandelement am Kran <span class="todo">Ort &amp; Jahr</span></h3></div>
       </article>
     </div>
     <p class="swipe-hint" aria-hidden="true">← Wischen für weitere Projekte →</p>

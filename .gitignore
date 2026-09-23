@@ -1,3 +1,5 @@
 .DS_Store
 Thumbs.db
 *.tmp
+assets/bilder/*
+!assets/bilder/LIESMICH.md
