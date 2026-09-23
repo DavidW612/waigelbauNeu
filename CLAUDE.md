@@ -35,6 +35,12 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   sonst ruckelt es auf dem Handy. Anruf-Leiste mit zwei Schwellen (rein ab 75 %, raus unter 45 %).
 - Mobile-first. Nach jeder Änderung auf Handybreite (320–414 px) prüfen: kein seitliches Scrollen,
   Tap-Flächen groß genug. Hover-Effekte nur für Maus (`@media (hover: hover/none)`).
+- **Leistung auf dem Handy** (Abschnitt „Leistung auf dem Handy“ in style.css):
+  Auf Touch-Geräten sind `backdrop-filter`, `mix-blend-mode`, `mask-image` und Parallax
+  abgeschaltet – genau diese vier haben die Seite auf dem Handy ruckeln lassen.
+  Sie bleiben nur für Maus-Geräte aktiv. Beim Hinzufügen neuer Effekte daran denken.
+  Menü und Anruf-Leiste werden per `transform` bewegt: in dem Abschnitt NIE ein
+  zusätzliches `transform` auf `.nav__links` oder `.callbar` setzen, das bricht sie.
 
 ## Inhaltliche Regeln
 - Nie von Subunternehmern sprechen. Aber auch nichts behaupten, was nicht belegt ist

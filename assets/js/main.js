@@ -9,6 +9,7 @@
   var nav = document.querySelector(".nav");
   var callbar = document.querySelector(".callbar");
   var ticking = false;
+  var zeigeWasImBildIst = null;
   function onScroll() {
     var y = window.scrollY || window.pageYOffset;
     if (nav) nav.classList.toggle("is-scrolled", y > 40);
@@ -31,8 +32,11 @@
   var heroBg = document.querySelector(".hero__bg");
   var heroVisual = document.querySelector(".hero__visual");
   var hero = document.querySelector(".hero");
+  /* Auf Touch-Geräten kein Parallax: das Skalieren des Hintergrunds bei jedem
+     Frame war die zweite große Bremse auf dem Handy. */
+  var sparsam = window.matchMedia("(hover: none)").matches || window.innerWidth <= 960;
   function parallax(y) {
-    if (reduceMotion || !hero) return;
+    if (reduceMotion || sparsam || !hero) return;
     var h = hero.offsetHeight;
     if (y > h) return;
     var p = y / h;
@@ -133,12 +137,40 @@
       entries.forEach(function (entry) {
         if (!entry.isIntersecting) return;
         var el = entry.target;
+        /* Hohe Blöcke – etwa das Anfrageformular – erreichen 18 % erst, wenn
+           man schon mittendrin ist. Die blenden ein, sobald sie ins Bild kommen. */
+        var gross = el.offsetHeight > window.innerHeight * 0.55;
+        if (!gross && entry.intersectionRatio < 0.18) return;
         el.classList.add("is-visible");
         if (el.hasAttribute("data-count")) countUp(el);
         io.unobserve(el);
       });
-    }, { threshold: 0.18, rootMargin: "0px 0px -6% 0px" });
+      /* etwas früher als das Element wirklich im Bild ist */
+    }, { threshold: [0, 0.18], rootMargin: "0px 0px 8% 0px" });
     targets.forEach(function (el) { io.observe(el); });
+
+    /* Sicherheitsnetz: Falls der Beobachter nicht anschlägt, blenden Elemente
+       beim Scrollen trotzdem ein – kein Abschnitt bleibt unsichtbar hängen. */
+    var offen = Array.prototype.slice.call(targets);
+    zeigeWasImBildIst = function () {
+      if (!offen.length) return;
+      offen = offen.filter(function (el) {
+        if (el.classList.contains("is-visible")) return false;
+        if (!imBild(el)) return true;
+        el.classList.add("is-visible");
+        if (el.hasAttribute("data-count")) countUp(el);
+        io.unobserve(el);
+        return false;
+      });
+    };
+    window.setTimeout(zeigeWasImBildIst, 700);
+    var letztePruefung = 0;
+    window.addEventListener("scroll", function () {
+      var jetzt = Date.now();
+      if (jetzt - letztePruefung < 150) return;   /* höchstens alle 150 ms */
+      letztePruefung = jetzt;
+      zeigeWasImBildIst();
+    }, { passive: true });
   } else {
     targets.forEach(function (el) {
       el.classList.add("is-visible");
@@ -234,7 +266,11 @@
     var len = Math.max(end - top, 0);
     var vh = window.innerHeight;
     var p = Math.min(Math.max((vh * 0.6 - r.top - top) / len, 0), 1);
-    tlFill.style.height = (p * len) + "px";
+    /* scaleY statt height: eine Höhenänderung pro Frame zwingt den Browser
+       jedes Mal zum Neuberechnen des Layouts. */
+    tlFill.style.height = len + "px";
+    tlFill.style.transformOrigin = "top";
+    tlFill.style.transform = "scaleY(" + p + ")";
   }
   if (tlFill) { window.addEventListener("scroll", function () { window.requestAnimationFrame(updateTimeline); }, { passive: true }); updateTimeline(); }
 
