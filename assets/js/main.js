@@ -66,13 +66,15 @@
   /* ---- Hochzählende Zahlen ---- */
   /* Zahlen stehen im HTML korrekt (auch ohne JS). Das Suffix (z. B. „+“ oder „%“)
      wird gemerkt, bevor der Zähler auf 0 gesetzt wird. */
-  /* Die richtige Zahl steht im HTML und bleibt dort stehen. Auf 0 gesetzt wird
-     erst beim Start des Zählers – so kann nie eine 0 hängen bleiben, wenn die
-     Animation aus irgendeinem Grund nicht anläuft. */
+  /* Die richtige Zahl steht im HTML (so ist sie auch ohne JavaScript da).
+     Läuft die Animation, steht von Anfang an 0 – sonst sieht man erst die
+     fertige Zahl und sie springt beim Hochzählen zurück auf null. */
   var counters = document.querySelectorAll("[data-count]");
+  var zaehlerAnimiert = !reduceMotion && "IntersectionObserver" in window;
   counters.forEach(function (el) {
     var s = el.querySelector("small");
     el.setAttribute("data-suffix", s ? s.outerHTML : "");
+    if (zaehlerAnimiert) el.innerHTML = "0" + el.getAttribute("data-suffix");
   });
 
   function countUp(el) {

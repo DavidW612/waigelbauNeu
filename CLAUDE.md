@@ -49,7 +49,10 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   Das Reveal blendet bewusst früh ein, die Zahlen brauchen das Gegenteil: Start erst,
   wenn sie mitten im Bild stehen (62 % der Höhe), sonst ist das Hochzählen beim zügigen
   Scrollen vorbei, bevor man hinsieht. Läuft genau einmal pro Seitenaufruf (wie alle
-  anderen Animationen auch), kein Zurücksetzen beim Hoch- und Runterscrollen. Dauer: 1,4 s. Die echten Zahlen
+  anderen Animationen auch), kein Zurücksetzen beim Hoch- und Runterscrollen. Dauer: 1,4 s.
+  Läuft die Animation, steht von Anfang an 0 da (sonst springt die fertige Zahl beim Start
+  zurück auf null). Die echten Zahlen stehen im HTML – ohne JS und bei „Bewegung
+  reduzieren“ sind sie sofort sichtbar, dazu eine Notbremse nach Ablauf der Animation. Die echten Zahlen
   stehen im HTML und werden erst beim Start auf 0 gesetzt – so bleibt nie eine 0 stehen.
 
 ## Inhaltliche Regeln
