@@ -41,6 +41,11 @@ Betreut von David (Bruder). Mit David immer auf Deutsch kommunizieren. Sprache d
   Sie bleiben nur für Maus-Geräte aktiv. Beim Hinzufügen neuer Effekte daran denken.
   Menü und Anruf-Leiste werden per `transform` bewegt: in dem Abschnitt NIE ein
   zusätzliches `transform` auf `.nav__links` oder `.callbar` setzen, das bricht sie.
+  Seitenkopf-Zeichnungen: am Rechner zeichnen sich die Linien (`draw`), auf dem Handy
+  blenden die Teile ein (`teilEin`) – Linienzeichnen ruckelt dort.
+- Hochzählende Zahlen starten erst, wenn der Block gut im Bild ist (oben bei 85 % der
+  Bildschirmhöhe), sonst ist der Zähler vorbei, bevor man hinsieht. Die echten Zahlen
+  stehen im HTML und werden erst beim Start auf 0 gesetzt – so bleibt nie eine 0 stehen.
 
 ## Inhaltliche Regeln
 - Nie von Subunternehmern sprechen. Aber auch nichts behaupten, was nicht belegt ist

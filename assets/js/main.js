@@ -66,26 +66,37 @@
   /* ---- Hochzählende Zahlen ---- */
   /* Zahlen stehen im HTML korrekt (auch ohne JS). Das Suffix (z. B. „+“ oder „%“)
      wird gemerkt, bevor der Zähler auf 0 gesetzt wird. */
+  /* Die richtige Zahl steht im HTML und bleibt dort stehen. Auf 0 gesetzt wird
+     erst beim Start des Zählers – so kann nie eine 0 hängen bleiben, wenn die
+     Animation aus irgendeinem Grund nicht anläuft. */
   var counters = document.querySelectorAll("[data-count]");
   counters.forEach(function (el) {
     var s = el.querySelector("small");
     el.setAttribute("data-suffix", s ? s.outerHTML : "");
-    if (!reduceMotion && "IntersectionObserver" in window) el.innerHTML = "0" + el.getAttribute("data-suffix");
   });
 
   function countUp(el) {
+    if (el.getAttribute("data-counting") === "1") return;
+    el.setAttribute("data-counting", "1");
     var target = parseFloat(el.getAttribute("data-count"));
     var suffixHTML = el.getAttribute("data-suffix") || "";
     if (reduceMotion) { el.innerHTML = target + suffixHTML; return; }
-    var duration = 1800, start = null;
+    var duration = 1800, start = null, fertig = false;
+    el.innerHTML = "0" + suffixHTML;
     function frame(ts) {
       if (!start) start = ts;
       var t = Math.min((ts - start) / duration, 1);
       var eased = 1 - Math.pow(1 - t, 4);
       el.innerHTML = Math.round(target * eased) + suffixHTML;
       if (t < 1) window.requestAnimationFrame(frame);
+      else fertig = true;
     }
     window.requestAnimationFrame(frame);
+    /* Notbremse: läuft die Animation nicht (z. B. Tab im Hintergrund),
+       steht am Ende trotzdem die richtige Zahl da. */
+    window.setTimeout(function () {
+      if (!fertig) el.innerHTML = target + suffixHTML;
+    }, duration + 900);
   }
 
   /* ---- Zeichnungen erst starten, wenn sie im Bild sind ----
@@ -103,6 +114,14 @@
   function imBild(el) {
     var r = el.getBoundingClientRect();
     return r.bottom > 0 && r.top < (window.innerHeight || doc.clientHeight);
+  }
+  /* Deutlich im Bild – nicht nur mit der Kante am unteren Rand. Wichtig für
+     die hochzählenden Zahlen: sonst läuft der Zähler ab, während man noch
+     scrollt, und man sieht nur noch das Ergebnis. */
+  function gutImBild(el) {
+    var r = el.getBoundingClientRect();
+    var vh = window.innerHeight || doc.clientHeight;
+    return r.top < vh * 0.85 && r.bottom > vh * 0.08;
   }
   if (drawings.length) {
     if ("IntersectionObserver" in window) {
@@ -156,7 +175,7 @@
       if (!offen.length) return;
       offen = offen.filter(function (el) {
         if (el.classList.contains("is-visible")) return false;
-        if (!imBild(el)) return true;
+        if (!gutImBild(el)) return true;
         el.classList.add("is-visible");
         if (el.hasAttribute("data-count")) countUp(el);
         io.unobserve(el);
